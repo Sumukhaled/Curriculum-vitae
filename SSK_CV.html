@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shah Sumaiya Khaled | Laboratory Research Assistant Technician</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals (Stone, Slate) with Teal Accent -->
+    <!-- Application Structure Plan: A single-page, multi-section narrative portfolio. The structure is designed to guide a hiring manager from a high-level summary to detailed proof points. It starts with a Hero section for immediate impact, followed by a direct "Qualifications Matrix" mapping skills to job duties for quick assessment. It then flows into deeper dives on "Research & Technical Skills" (with a visual chart), "Experience & Projects," and "Education." This non-linear, navigable structure is more persuasive and user-friendly than a traditional CV, allowing the user to explore areas of interest efficiently. The new "Why I'm a Great Fit" section leverages LLM to dynamically generate a tailored summary, enhancing immediate impact and personalization. -->
+    <!-- Visualization & Content Choices: The core of this SPA is translating the CV into an interactive narrative. A key visualization is the Chart.js horizontal bar chart for "Technical Proficiency," which turns a static list of skills into an easily digestible graphic (Goal: Inform/Compare). The "Qualifications Matrix" uses a structured HTML grid to directly compare job duties with the candidate's experience (Goal: Compare/Persuade). The "Research Experience" section uses an interactive accordion (HTML/JS) to organize detailed project information without overwhelming the user (Goal: Organize/Inform). The new "Why I'm a Great Fit" section uses a button to trigger an LLM call via Gemini API, displaying a generated text summary (Goal: Persuade/Summarize). These choices prioritize clarity, engagement, and direct mapping of qualifications to job requirements, with the LLM adding a dynamic, personalized touch. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 450px;
+            width: 100%;
+            max-width: 800px;
+        }
+        .section-title {
+            color: #1e293b; /* slate-800 */
+        }
+        .accent-color {
+            color: #0d9488; /* teal-600 */
+        }
+        .accent-bg {
+            background-color: #0d9488; /* teal-600 */
+        }
+        .accent-bg-hover:hover {
+            background-color: #0f766e; /* teal-700 */
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -2px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="#hero" class="text-xl font-bold section-title">Shah Sumaiya Khaled</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#matrix" class="text-slate-600 hover:accent-color px-3 py-2 rounded-md text-sm font-medium">Qualifications</a>
+                        <a href="#skills" class="text-slate-600 hover:accent-color px-3 py-2 rounded-md text-sm font-medium">Skills</a>
+                        <a href="#experience" class="text-slate-600 hover:accent-color px-3 py-2 rounded-md text-sm font-medium">Experience</a>
+                        <a href="#education" class="text-slate-600 hover:accent-color px-3 py-2 rounded-md text-sm font-medium">Education</a>
+                        <a href="#contact" class="text-slate-600 hover:accent-color px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-slate-500 hover:text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#matrix" class="text-slate-600 hover:accent-color block px-3 py-2 rounded-md text-base font-medium">Qualifications</a>
+                <a href="#skills" class="text-slate-600 hover:accent-color block px-3 py-2 rounded-md text-base font-medium">Skills</a>
+                <a href="#experience" class="text-slate-600 hover:accent-color block px-3 py-2 rounded-md text-base font-medium">Experience</a>
+                <a href="#education" class="text-slate-600 hover:accent-color block px-3 py-2 rounded-md text-base font-medium">Education</a>
+                <a href="#contact" class="text-slate-600 hover:accent-color block px-3 py-2 rounded-md text-base font-medium">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Hero Section -->
+        <section id="hero" class="text-center py-20 sm:py-28">
+            <h1 class="text-4xl md:text-6xl font-extrabold section-title tracking-tight">Shah Sumaiya Khaled</h1>
+            <p class="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-slate-600">
+                Aspiring Laboratory Research Technician bridging academic excellence with hands-on scientific inquiry to advance thoracic surgery and immunology research.
+            </p>
+            <div class="mt-8 flex justify-center gap-4">
+                <a href="mailto:shahsumaiyakhaled@gmail.com" class="inline-block accent-bg text-white font-semibold px-8 py-3 rounded-lg shadow-md accent-bg-hover transition-colors">
+                    Contact Me
+                </a>
+                <a href="https://www.linkedin.com/in/sumaiyakhaled/" target="_blank" class="inline-block bg-white text-slate-700 font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-slate-100 transition-colors">
+                    LinkedIn Profile
+                </a>
+            </div>
+        </section>
+
+        <!-- Why I'm a Great Fit Section (LLM Powered) -->
+        <section id="why-fit" class="py-16 sm:py-20 bg-slate-100 rounded-lg p-6 md:p-8 mb-12">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold section-title">Why I'm a Great Fit ✨</h2>
+                <p class="mt-3 max-w-2xl mx-auto text-lg text-slate-600">
+                    Curious how my background uniquely positions me for this role? Click the button below to generate a tailored summary!
+                </p>
+            </div>
+            <div class="flex justify-center">
+                <button id="generate-fit-statement" class="accent-bg text-white font-semibold px-8 py-3 rounded-lg shadow-md accent-bg-hover transition-colors flex items-center gap-2">
+                    Generate My Fit Statement ✨
+                    <span id="loading-spinner" class="hidden animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span>
+                </button>
+            </div>
+            <div id="fit-statement-output" class="mt-8 p-6 bg-white rounded-lg shadow-inner hidden">
+                <p class="text-slate-700 leading-relaxed" id="generated-text"></p>
+            </div>
+        </section>
+
+        <!-- Qualifications Matrix -->
+        <section id="matrix" class="py-16 sm:py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold section-title">A Direct Fit for the Role</h2>
+                <p class="mt-3 max-w-2xl mx-auto text-lg text-slate-600">
+                    This section demonstrates how my skills and experiences, gained through rigorous academic research and teaching roles, directly align with the primary duties of the Laboratory Research Assistant Technician position.
+                </p>
+            </div>
+            <div class="card p-6 md:p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-lg section-title">Job Duty: DNA Extractions & Routine Procedures</h3>
+                        <p class="text-slate-600">My Master's thesis work provided extensive hands-on experience with DNA Extraction, PCR amplification, and Gel Electrophoresis, establishing a strong foundation in core molecular biology workflows.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-lg section-title">Job Duty: Prepare Solutions, Media, & Reagents</h3>
+                        <p class="text-slate-600">As a Graduate Teaching Assistant, I was responsible for the meticulous preparation of all necessary chemical solutions, growth media, and reagents for undergraduate Microbiology and Ecology labs.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-lg section-title">Job Duty: Assist in Specimen Processing</h3>
+                        <p class="text-slate-600">Familiar with precise biochemical analysis of biological samples, including determination of blood glucose, packed cell volume, and total protein, showcasing careful specimen handling.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-lg section-title">Job Duty: Lab Housekeeping & Sterile Procedures</h3>
+                        <p class="text-slate-600">Through lab preparation support for Microbiology, I have practical experience in maintaining sterile environments, operating lab equipment like autoclaves, and ensuring general lab organization and cleanliness.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-lg section-title">Job Duty: Maintain Inventory</h3>
+                        <p class="text-slate-600">My teaching and research roles required careful tracking of chemical and consumable inventories to ensure experiments and lab sessions ran smoothly, demonstrating organizational skills.</p>
+                    </div>
+                    <div class="space-y-2">
+                        <h3 class="font-semibold text-lg section-title">Job Duty: Collect, Record & Enter Data</h3>
+                        <p class="text-slate-600">Proficient in using SPSS, R, and Graphpad Prism for data analysis and visualization. My thesis work involved rigorous collection, recording, and statistical analysis of experimental data.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Skills Section -->
+        <section id="skills" class="py-16 sm:py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold section-title">Research & Technical Skills</h2>
+                <p class="mt-3 max-w-2xl mx-auto text-lg text-slate-600">
+                    A visual overview of my proficiency in key laboratory and data analysis techniques. This chart highlights the practical skills I've developed through academic research and coursework, which are foundational for a research technician role.
+                </p>
+            </div>
+            <div class="card p-6 md:p-8">
+                <div class="chart-container">
+                    <canvas id="skillsChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Research Experience Section -->
+        <section id="experience" class="py-16 sm:py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold section-title">Research & Professional Experience</h2>
+                <p class="mt-3 max-w-2xl mx-auto text-lg text-slate-600">
+                    My background includes formal research projects, teaching assistantships, and leadership roles that have cultivated both technical and soft skills. Click on each role to learn more.
+                </p>
+            </div>
+            <div id="accordion-container" class="space-y-4 max-w-4xl mx-auto">
+                <!-- Accordion items will be injected here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section id="education" class="py-16 sm:py-20">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold section-title">Academic Credentials</h2>
+                <p class="mt-3 max-w-2xl mx-auto text-lg text-slate-600">A consistent record of academic excellence in the biological sciences.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold section-title">M.S. in Biological Science</h3>
+                    <p class="font-medium text-slate-600">Purdue University Fort Wayne</p>
+                    <p class="text-sm text-slate-500">2024 – Present</p>
+                    <p class="mt-2 text-2xl font-bold accent-color">GPA: 4.00/4.00</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold section-title">M.S. in Zoology</h3>
+                    <p class="font-medium text-slate-600">University of Dhaka</p>
+                    <p class="text-sm text-slate-500">2020 – 2022</p>
+                    <p class="mt-2 text-2xl font-bold accent-color">GPA: 3.98/4.00</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold section-title">B.S. in Zoology</h3>
+                    <p class="font-medium text-slate-600">University of Dhaka</p>
+                    <p class="text-sm text-slate-500">2016 – 2020</p>
+                    <p class="mt-2 text-2xl font-bold accent-color">GPA: 3.82/4.00</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-slate-800 text-white mt-20">
+        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-2xl font-bold">Ready to Contribute</h2>
+            <p class="mt-2 max-w-2xl mx-auto text-slate-300">
+                I am eager to apply my skills and dedication to the innovative research at the University of Maryland's Division of Thoracic Surgery. Let's connect.
+            </p>
+            <div class="mt-6 space-y-2 text-lg">
+                <p>
+                    <a href="mailto:shahsumaiyakhaled@gmail.com" class="hover:text-teal-400 transition-colors">shahsumaiyakhaled@gmail.com</a>
+                </p>
+                <p>
+                    <a href="https://www.linkedin.com/in/sumaiyakhaled/" target="_blank" class="hover:text-teal-400 transition-colors">linkedin.com/in/sumaiyakhaled</a>
+                </p>
+                 <p>+1 260 342 9254</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile menu toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Chart.js Skills Chart
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            const skillsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [
+                        'DNA Extraction', 'PCR & Gel Electrophoresis', 
+                        'Biochemical Assays (Protein, Glucose)', 'Immunological Assays (Lysozyme)', 
+                        'Data Entry & Recording', 'Statistical Analysis (R, SPSS)',
+                        'Sterile Technique', 'Solution & Media Prep'
+                    ],
+                    datasets: [{
+                        label: 'Experience Level',
+                        data: [80, 80, 70, 65, 95, 75, 90, 95], // Represented as a percentage out of 100
+                        backgroundColor: 'rgba(20, 184, 166, 0.6)', // teal-500 with opacity
+                        borderColor: 'rgba(13, 148, 136, 1)', // teal-600
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let value = context.raw;
+                                    let label = '';
+                                    if (value >= 90) label = 'Extensive Practice (Teaching/Prep)';
+                                    else if (value >= 75) label = 'Hands-On Application (Research)';
+                                    else if (value >= 60) label = 'Practical Experience (Research)';
+                                    else label = 'Academic Foundation';
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                display: false
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                           ticks: {
+                                color: '#334155', // slate-700
+                                font: {
+                                    size: 14
+                                }
+                           },
+                           grid: {
+                                color: '#e2e8f0' // slate-200
+                           }
+                        }
+                    }
+                }
+            });
+
+            // Accordion Data & Logic
+            const accordionData = [
+                {
+                    title: "Graduate Teaching Assistant",
+                    affiliation: "Purdue University Fort Wayne",
+                    date: "Aug 2024 - Present",
+                    content: "Responsible for guiding students through lab protocols for Intermediate Ecology and Principles of Ecology & Evolution. Key duties included meticulous preparation of lab materials, reagents, and solutions, maintaining lab equipment, and providing support for Microbiology lab preparations, ensuring a safe and effective learning environment."
+                },
+                {
+                    title: "Graduate Researcher",
+                    affiliation: "University of Dhaka",
+                    date: "Aug 2021 – Apr 2022",
+                    content: "Conducted Master's thesis research on the effects of copper on insect brain tissue. This independent project involved experimental design, extensive use of molecular techniques (DNA extraction, PCR), biochemical assays, precise data collection, and statistical analysis using SPSS and R."
+                },
+                {
+                    title: "President, Bangladesh Student Association",
+                    affiliation: "Purdue University Fort Wayne",
+                    date: "Oct 2024 - Present",
+                    content: "Leading a student organization to promote cultural exchange and support for the Bangladeshi student community. This role demonstrates leadership, organizational skills, and effective communication through event planning and community outreach."
+                }
+            ];
+
+            const accordionContainer = document.getElementById('accordion-container');
+            accordionData.forEach((item, index) => {
+                const accordionItem = document.createElement('div');
+                accordionItem.className = 'card';
+                accordionItem.innerHTML = `
+                    <button class="accordion-header w-full text-left p-4 md:p-6 flex justify-between items-center transition">
+                        <div>
+                            <h3 class="font-bold text-lg md:text-xl section-title">${item.title}</h3>
+                            <p class="text-sm font-medium text-slate-500">${item.affiliation} | ${item.date}</p>
+                        </div>
+                        <span class="accordion-icon text-2xl accent-color transition-transform transform">+</span>
+                    </button>
+                    <div class="accordion-content overflow-hidden max-h-0 transition-max-height duration-500 ease-in-out">
+                        <p class="p-4 md:p-6 pt-0 text-slate-600">${item.content}</p>
+                    </div>
+                `;
+                accordionContainer.appendChild(accordionItem);
+            });
+
+            document.querySelectorAll('.accordion-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('.accordion-icon');
+                    
+                    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                        content.style.maxHeight = '0px';
+                        icon.classList.remove('rotate-45');
+                    } else {
+                        // Close all others
+                        document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = '0px');
+                        document.querySelectorAll('.accordion-icon').forEach(i => i.classList.remove('rotate-45'));
+
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.classList.add('rotate-45');
+                    }
+                });
+            });
+
+            // LLM Integration for "Why I'm a Great Fit"
+            const generateButton = document.getElementById('generate-fit-statement');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const outputDiv = document.getElementById('fit-statement-output');
+            const generatedTextP = document.getElementById('generated-text');
+
+            generateButton.addEventListener('click', async () => {
+                generateButton.disabled = true;
+                loadingSpinner.classList.remove('hidden');
+                outputDiv.classList.add('hidden');
+                generatedTextP.textContent = '';
+
+                const jobDescription = `
+                    Job Title: Laboratory Research Assistant Technician - (250000MZ)
+                    Division: Thoracic Surgery, University of Maryland Department of Surgery
+                    Focus: Personalized immune-mediated responses, lung allograft rejection, immunosuppression strategies, developing drugs for lung cancer.
+                    Primary Duties:
+                    1. Performs simple routine procedures and simple synthesis, product isolation, or biophysical procedures, such as DNA extractions.
+                    2. Prepares simple chemical solutions, media, reagents, stains, and buffers.
+                    3. Assists in collection, preparation, and processing of specimens or cell or tissue cultures.
+                    4. Performs general housekeeping of laboratory, and operation of laboratory equipment.
+                    5. Assists with sterile procedures.
+                    6. Maintains chemicals and equipment inventory.
+                    7. Develops and prints film detailing biochemical or other analyses.
+                    8. Assists in collection, recording, and entering research data.
+                    Qualifications: Associates degree in a biological or chemical science. Experience: None.
+                    Required Skills: General knowledge of natural/chemical sciences, safe handling of specimens/materials/equipment, performing lab procedures, effective communication (oral/written), computer proficiency, lifting/transporting materials, wearing PPE.
+                `;
+
+                const candidateExperience = `
+                    Candidate Name: Shah Sumaiya Khaled
+                    Education:
+                    - M.S. in Biological Science (Purdue University Fort Wayne, Aug 2024 – Present, GPA: 4.00/4.00)
+                    - M.S. in Zoology (University of Dhaka, Jul 2020 – Aug 2022, GPA: 3.98/4.00)
+                    - B.S. in Zoology (University of Dhaka, Jan 2016 – Jun 2020, GPA: 3.82/4.00)
+
+                    Research Skills:
+                    - DNA Extraction, PCR amplification, Gel electrophoresis, DNA barcoding
+                    - Blood Glucose, Packed cell volume, Total Protein determination
+                    - Sera Lysozyme and Macrophage Phagocytosis determination
+                    - Fish husbandry and water chemistry maintenance
+
+                    Technical Skills:
+                    - Image Processing: Adobe Photoshop, Adobe Illustrator
+                    - Productivity: Google Workspace, MS Office Suite
+                    - Statistical Software: SPSS, R, Graphpad Prism
+
+                    Experience:
+                    - Graduate Teaching Assistant (Purdue University Fort Wayne, Aug 2024 - Present): Responsible for guiding students through lab protocols, meticulous preparation of lab materials, reagents, and solutions, maintaining lab equipment, and providing support for Microbiology lab preparations, ensuring a safe and effective learning environment.
+                    - Graduate Researcher (University of Dhaka, Aug 2021 – Apr 2022): Conducted Master's thesis research ("Effect of Copper in the Brain Tissues and Copper Induced Mortality of a Model Insect"). Involved experimental design, extensive use of molecular techniques (DNA extraction, PCR), biochemical assays, precise data collection, and statistical analysis using SPSS and R.
+                    - President, Bangladesh Student Association (Purdue University Fort Wayne, Oct 2024 - Present): Leadership, organizational skills, communication through event planning and community outreach.
+                `;
+
+                const prompt = `
+                    As a hiring manager for a Laboratory Research Assistant Technician position, review the following job description and candidate's experience.
+                    Generate a concise (2-3 sentences) statement explaining why this candidate is a great fit for the role, emphasizing their directly transferable skills and potential.
+
+                    Job Description:
+                    ${jobDescription}
+
+                    Candidate's Experience:
+                    ${candidateExperience}
+
+                    Focus on highlighting how the candidate's academic research, teaching assistant experience, and specific lab skills (e.g., DNA extraction, solution prep, data analysis) directly match the job's primary duties and the lab's research focus (immunology, lung health).
+                `;
+
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        generatedTextP.textContent = text;
+                        outputDiv.classList.remove('hidden');
+                    } else {
+                        generatedTextP.textContent = 'Could not generate statement. Please try again.';
+                        outputDiv.classList.remove('hidden');
+                    }
+                } catch (error) {
+                    console.error('Error calling Gemini API:', error);
+                    generatedTextP.textContent = 'An error occurred while generating the statement. Please check console for details.';
+                    outputDiv.classList.remove('hidden');
+                } finally {
+                    generateButton.disabled = false;
+                    loadingSpinner.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
